@@ -8,7 +8,7 @@ const Login = ({ onLogin, switchToRegister }) => {
 
   const handleSubmit = async () => {
     try {
-      const res = await axios.post('http://localhost:5000/api/v1/auth/login', { username, password });
+      const res = await axios.post('https://expensetrack-backend-jvkr.onrender.com, { username, password });
       onLogin(res.data.token, res.data.username);
     } catch (err) {
       setError(err.response?.data?.error || 'Login failed');

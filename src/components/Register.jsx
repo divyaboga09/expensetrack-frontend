@@ -8,7 +8,7 @@ const Register = ({ switchToLogin }) => {
 
   const handleSubmit = async () => {
     try {
-      await axios.post('http://localhost:5000/api/v1/auth/register', { username, password });
+      await axios.post('https://expensetrack-backend-jvkr.onrender.com', { username, password });
       setMsg('Registered! Please login.');
     } catch (err) {
       setMsg(err.response?.data?.error || 'Error');
