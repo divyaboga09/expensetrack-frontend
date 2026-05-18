@@ -8,7 +8,17 @@ const COLORS = {
   shopping: '#ec4899',
   health: '#10b981',
   salary: '#6c63ff',
-  other: '#64748b'
+  other: '#64748b',
+};
+
+const categoryEmojis = {
+  food: '🍕',
+  transport: '🚗',
+  entertainment: '🎬',
+  shopping: '🛍️',
+  health: '💊',
+  salary: '💰',
+  other: '🔮',
 };
 
 const Chart = () => {
@@ -19,7 +29,8 @@ const Chart = () => {
   if (expenses.length === 0) return null;
 
   const categoryData = expenses.reduce((acc, t) => {
-    const cat = t.category || 'other';
+    // Normalize category to lowercase and trim spaces
+    const cat = (t.category || 'other').toString().toLowerCase().trim();
     const existing = acc.find(item => item.name === cat);
     if (existing) {
       existing.value += Math.abs(t.amount);
@@ -28,11 +39,6 @@ const Chart = () => {
     }
     return acc;
   }, []);
-
-  const categoryEmojis = {
-    food: '🍕', transport: '🚗', entertainment: '🎬',
-    shopping: '🛍️', health: '💊', salary: '💰', other: '📦'
-  };
 
   return (
     <div className="section-card">
@@ -48,14 +54,25 @@ const Chart = () => {
               cy="50%"
               outerRadius={100}
               dataKey="value"
-              label={({ name, percent }) => `${categoryEmojis[name]} ${(percent * 100).toFixed(0)}%`}
+              label={({ name, percent }) =>
+                `${categoryEmojis[name] || '🔮'} ${(percent * 100).toFixed(0)}%`
+              }
             >
               {categoryData.map((entry, index) => (
-                <Cell key={index} fill={COLORS[entry.name] || '#64748b'} />
+                <Cell
+                  key={index}
+                  fill={COLORS[entry.name] || '#64748b'}
+                />
               ))}
             </Pie>
-            <Tooltip formatter={(value) => `₹${value}`} />
-            <Legend formatter={(value) => `${categoryEmojis[value]} ${value}`} />
+            <Tooltip
+              formatter={(value) => `₹${value}`}
+            />
+            <Legend
+              formatter={(value) =>
+                `${categoryEmojis[value] || '🔮'} ${value}`
+              }
+            />
           </PieChart>
         </ResponsiveContainer>
       )}
